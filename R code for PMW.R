@@ -1121,56 +1121,6 @@ write.xlsx(auc_results, "~/000_2 文章/036 文章11-ISOS代谢组/UKB关联交�
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-# ** 模型和结局函数 ####
-create_models_and_outcomes <- function() {
-  models <- list("Age_Sex" = "age_baseline + as.factor(a2)",
-                 
-                 #死亡
-                 "Liao_model" = "as.factor(a6) + as.factor(a7) + as.factor(ipaqc) + as.factor(sleep_score) + as.factor(a10) + as.factor(a2) + as.factor(a1)",
-                 "Chiu_model" = "as.factor(a1) + as.factor(a2) + as.factor(prev_cancer) + as.factor(prev_hbp) + as.factor(a12) + hba1c + screa_umol + LDL_divide_HDL",
-                 "Mannan_model" = "as.factor(a1) + as.factor(a2) + a16 + TG_divide_HDL + as.factor(a6)",
-                 "Li_model" = "as.factor(a1) + as.factor(a2) + as.factor(ipaqc) + as.factor(a6) + egfr_scr + Albumin_divide_Scr",
-                 
-                 #心血管
-                 "FGCRS" = "as.factor(a1) + as.factor(a2) + a16 + as.factor(a12) + as.factor(TC) + as.factor(HDL) + as.factor(prev_dm)",                                      #(PMID:18212285)
-                 "SCORE2" = "as.factor(a1) + as.factor(a2) + as.factor(a6) + a16 + as.factor(TC) + as.factor(HDL) + as.factor(a3)",                                           #(PMID:34120177)
-                 "AHA_ASCVD" = "as.factor(a1) + as.factor(a2) + as.factor(a8) + as.factor(a6) + a16 + as.factor(TC) + as.factor(HDL) + as.factor(prev_dm) + as.factor(a13)",  #(PMID:)
-                 "WHO_CVD" = "as.factor(a1) + as.factor(a2) + as.factor(a6) + a16 + as.factor(TC) + as.factor(prev_dm) + as.factor(a3)",                                      #(PMID:)
-                 "FRS_T2D" = "as.factor(a1) + as.factor(a2) + as.factor(a10) + as.factor(a10) + a16 + as.factor(HDL) + triglycerides + whr + fbg",
-                 "COMPASS_PAD" = "as.factor(a1) + as.factor(a2) + as.factor(a10) + a16 + screa_umol + as.factor(TC) + + as.factor(a6) + as.factor(prev_dm) + as.factor(prev_stroke) + as.factor(prev_cvd_chd) + as.factor(prev_hbp)",
-                 
-                 
-                 #阻塞性肺病
-                 "Kotz_model" = "as.factor(a1) + as.factor(a2) + as.factor(a6) + as.factor(prev_asthma) + townsend",                                                                  #(PMID:24841327; 28304375)
-                 "EHS_COPD" = "as.factor(a1) + as.factor(a6) + as.factor(a9) + as.factor(a5) + as.factor(a7) + bmi + pa_met + as.factor(prev_hbp)",
-                 "BARC_index" = "as.factor(a1) + bmi + screa_umol + hemoglobin + as.factor(prev_asthma) + as.factor(prev_cvd_af) + as.factor(prev_ckd) + as.factor(a6) + as.factor(prev_dementia) + as.factor(a2) + plt + as.factor(prev_stroke)",
-                 "Himes_model" = "as.factor(a1) + as.factor(a2) + as.factor(a8) + as.factor(a6) + as.factor(prev_dm) + as.factor(prev_cvd_hf)",
-                 
-                 #肾病
-                 "Nelson_model" = "as.factor(a1) + as.factor(a2) + as.factor(a8) + egfr_scr + as.factor(prev_cvd) + as.factor(a6) + as.factor(prev_hbp) + bmi + mau",                 #(PMID:31703124)
-                 "KFRE" = "as.factor(a1) + as.factor(a2) + uacr + egfr_scr",                                                                                                             #(PMID:26757465)
-                 "Chien_model" = "as.factor(a1) + bmi + as.factor(DBP) + as.factor(prev_dm) + as.factor(prev_stroke)",                                                     #(PMID:20800153)
-                 "O_Seaghdha_model" = "as.factor(a1) + as.factor(prev_dm) + as.factor(prev_hbp) + egfr_scr + mau",                                                                    #(PMID:22340925)
-                 
-                 #肝病
-                 "CLivD_score" = "as.factor(a1) + as.factor(a2) + as.factor(a7) + whr + as.factor(prev_dm) + as.factor(a6) + ggt",
-                 "Zhu_model" = "bmi + as.factor(TC) + ast + alt + TG_divide_HDL + fbg + ggt",
-                 "Zhang_model" = "as.factor(a1) + as.factor(a2) + as.factor(TC) + bmi + waist + a15 + sua + as.factor(prev_dm) + as.factor(HDL)",
-                 "Xue_model" = "as.factor(a1) + as.factor(a2) + as.factor(a8) + pa_met + as.factor(a6) + as.factor(diet) + a16 + bmi + waist + as.factor(prev_cvd)",
-                 
-                 #肿瘤
-                 "CanPredict_lung" = "as.factor(a1) + as.factor(a2) + as.factor(a8) + as.factor(a5) + as.factor(a6) + as.factor(a7) + as.factor(a10) + as.factor(prev_copd) + as.factor(prev_asthma) + as.factor(prev_vte) + as.factor(prev_cancer)",
-                 "LLP" = "as.factor(a1) + as.factor(a2) + as.factor(a6) + as.factor(prev_copd) +as.factor(prev_cancer)",
-                 "PLMO" = "as.factor(a1) + as.factor(a9) + as.factor(a8) + as.factor(a6) + bmi + as.factor(prev_copd) + as.factor(prev_cancer)",
-                 "LCRAT" = "as.factor(a1) + as.factor(a2) + as.factor(a9) + as.factor(a8) + as.factor(a6) + as.factor(a10) + as.factor(prev_copd)"
-  )
-  
-  outcomes <- c("death", "cancerdeath", "otherdeath", "chd", "mi", "stroke", "hf", "pad", "aaa", "t2d", "copd", "asthma", "renal_disease", "esrd", "liver_disease", "lungca")
-  category <- c("Mortality","Mortality","Mortality","Cardiometabolic","Cardiometabolic","Cardiometabolic","Cardiometabolic","Cardiometabolic","Cardiometabolic","Cardiometabolic","Pulmonary","Pulmonary","Kidney","Kidney","Liver","Cancer")
-  
-  return(list(models = models, outcomes = outcomes, category = category))
-}
-
 models <- create_models_and_outcomes()$models
 outcomes <- create_models_and_outcomes()$outcomes
 Category <- create_models_and_outcomes()$category
@@ -2305,28 +2255,6 @@ columns_to_convert <- c("MET", "met_lower", "met_upper",
 auc_results[columns_to_convert] <- lapply(auc_results[columns_to_convert], as.numeric)
 
 write.xlsx(auc_results, "xxx.xlsx")
-
-
-
-
-
-
-# * 模型和结局函数 ####
-create_models <- function() {
-  models <- list("Age_Sex" = "age + as.factor(sex)",
-                 "FGCRS" = "age + as.factor(sex) + as.factor(sbp_c) + as.factor(med_statin) + as.factor(chol_c) + as.factor(hdl_c)",                                      #(PMID:18212285)
-                 "SCORE2" = "age + as.factor(sex) + as.factor(smoking) + as.factor(sbp_c) + as.factor(chol_c) + as.factor(hdl_c)",                                           #(PMID:34120177)
-                 "AHA_ASCVD" = "age + as.factor(sex) + as.factor(smoking) + as.factor(sbp_c) + as.factor(chol_c) + as.factor(hdl_c) + as.factor(med_hbp)",  #(PMID:)
-                 "WHO_CVD" = "age + as.factor(sex) + as.factor(smoking) + as.factor(sbp_c) + as.factor(chol_c)",                                      #(PMID:)
-                 "Nelson_model" = "age + as.factor(sex) + as.factor(prev_cvd) + as.factor(egfr_c) + as.factor(smoking) + as.factor(prev_hbp) + as.factor(bmi_c) + as.factor(mau_c)",                 #(PMID:31703124)
-                 "Chien_model" = "age + as.factor(bmi_c) + as.factor(dbp_c) + as.factor(prev_cvd)",                                                     #(PMID:20800153)
-                 "O_Seaghdha_model" = "age + as.factor(prev_hbp) + as.factor(egfr_c) + as.factor(mau_c)"                                                                    #(PMID:22340925)
-  )
-  
-  return(list(models = models))
-}
-
-models <- create_models()$models
 
 
 
